@@ -15,6 +15,8 @@
 
 \<type> --> int | float | string
 
+\<string> --> ".\*"  
+
 \<identifier> --> ^.{1,8}$
 
 \<instructions_list> --> \<instuction>; \<instructions_list>;
