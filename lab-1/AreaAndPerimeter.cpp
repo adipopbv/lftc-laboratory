@@ -3,6 +3,10 @@
 using namespace std;
 
 int main() {
+    struct aaa {
+        int bbb;
+    } ceva{1}, altceva{1};
+    ceva = altceva;
     float area;
     float perim;
     float radius;

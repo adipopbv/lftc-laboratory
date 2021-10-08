@@ -9,19 +9,19 @@
 
 \<declarations_list> --> \<declaration>; \<declarations_list>;
 
-\<declarations_list> --> \<declaration>;
+ | \<declaration>;
 
 \<declaration> --> \<type> \<identifier>
 
-\<type> --> int | float | string
+\<type> --> int | float | \<user_struct>
 
-\<string> --> ".\*"  
+\<user_struct> --> struct \<identifier> { \<type> \<identifier>; }
 
-\<identifier> --> ^.{1,8}$
+\<identifier> --> ^[a-zA-Z][a-zA-Z0-9_-]{0,7}$
 
 \<instructions_list> --> \<instuction>; \<instructions_list>;
 
-\<instructions_list> --> \<instuction>;
+ | \<instuction>;
 
 \<instuction> --> \<assignment> | \<io> | \<repetitive> | \<conditional>
 
@@ -29,7 +29,7 @@
 
 \<expression> --> \<expression> + | - | * | / | % \<identifier> | CONST
 
-\<expression> --> \<identifier> | CONST + | - | * | / | % \<identifier> | CONST
+ | \<identifier> | CONST + | - | * | / | % \<identifier> | CONST
 
 \<io> --> \<input> | \<output>
 
