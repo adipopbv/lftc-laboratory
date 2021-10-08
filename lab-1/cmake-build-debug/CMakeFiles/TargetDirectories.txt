@@ -1,0 +1,3 @@
+/media/the-backpack/Work/University/Year 3/Semester 1/Limbaje formale si tehnici de compilare/Laborator/lab-1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/media/the-backpack/Work/University/Year 3/Semester 1/Limbaje formale si tehnici de compilare/Laborator/lab-1/cmake-build-debug/CMakeFiles/edit_cache.dir
+/media/the-backpack/Work/University/Year 3/Semester 1/Limbaje formale si tehnici de compilare/Laborator/lab-1/cmake-build-debug/CMakeFiles/lab_1.dir

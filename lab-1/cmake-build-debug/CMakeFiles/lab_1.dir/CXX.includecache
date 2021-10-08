@@ -1,0 +1,10 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/media/the-backpack/Work/University/Year 3/Semester 1/Limbaje formale si tehnici de compilare/Laborator/lab-1/Error2.cpp
+

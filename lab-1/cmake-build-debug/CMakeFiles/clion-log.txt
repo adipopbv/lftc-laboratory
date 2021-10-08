@@ -1,0 +1,4 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_DEPENDS_USE_COMPILER=FALSE -G "CodeBlocks - Unix Makefiles" "/media/the-backpack/Work/University/Year 3/Semester 1/Limbaje formale si tehnici de compilare/Laborator/lab-1"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /media/the-backpack/Work/University/Year 3/Semester 1/Limbaje formale si tehnici de compilare/Laborator/lab-1/cmake-build-debug
