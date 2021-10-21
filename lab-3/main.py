@@ -1,32 +1,38 @@
 from binary_search_tree import BinarySearchTree
-from finite_state_machines import AtomFSN
+from lexical_analyzer import LexicalAnalyzer
 
 
-class LexicalAnalyzer:
-    def __init__(self, code_lines: []) -> None:
-        self.atoms = {}
-        self.symbol_table = BinarySearchTree()
-        self.internal_form = []
-        self._code_lines = code_lines
-        self._atom_fsn = AtomFSN()
+def print_atoms(atoms: {}):
+    print("\nAtoms:")
+    for atom_key in atoms.keys():
+        print(str(atoms[atom_key]) + " : " + str(atom_key))
 
-    def analyze(self) -> None:
-        """
-        Processes the given lines of code into the internal form of the source program
 
-        :return: nothing
-        """
-        for code_line in self._code_lines:
-            pass
+def print_identifiers(identifiers: BinarySearchTree):
+    print("\nIdentifiers:\n" + identifiers.to_string())
+
+
+def print_constants(constants: BinarySearchTree):
+    print("\nConstants:\n" + constants.to_string())
+
+
+def print_internal_form(internal_form: []):
+    print("\nInternal form:")
+    for pair in internal_form:
+        print(str(pair[0]) + " : " + str(pair[1]))
 
 
 if __name__ == '__main__':
-    file = open("in.txt", "r")
-    lexical_analyzer = LexicalAnalyzer(file.readlines())
+    file = open("in1.txt", "r")
+    # file = open("in2.txt", "r")
+    # file = open("in3.txt", "r")
+    source_code = file.read()
+    lexical_analyzer = LexicalAnalyzer(source_code[:])
     try:
         lexical_analyzer.analyze()
-        print(lexical_analyzer.atoms)
-        print(lexical_analyzer.symbol_table)
-        print(lexical_analyzer.internal_form)
+        print_atoms(lexical_analyzer.atoms)
+        print_identifiers(lexical_analyzer.identifiers)
+        print_constants(lexical_analyzer.constants)
+        print_internal_form(lexical_analyzer.internal_form)
     except Exception as e:
         print(e)
