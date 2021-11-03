@@ -28,10 +28,10 @@ class Node:
             right_key = self._right_node.get_key_of(value)
         return left_key if left_key > right_key else right_key
 
-    def to_string(self):
-        string = str(self.key) + " : " + str(self.value) + "\n"
+    def to_string(self, string=""):
         if self._left_node is not None:
             string += self._left_node.to_string()
+        string += str(self.key) + " : " + str(self.value) + "\n"
         if self._right_node is not None:
             string += self._right_node.to_string()
         return string
