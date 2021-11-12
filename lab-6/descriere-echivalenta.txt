@@ -1,0 +1,12 @@
+FiniteStateMachine:
+	alphabet: vector<string>
+	initialState: string
+    finalStates: vector<string>  
+    transitions: vector<Transition>
+    states: vector<string> 
+
+Transition:
+	value: string
+	sourceState: string
+	destinationState: string
+

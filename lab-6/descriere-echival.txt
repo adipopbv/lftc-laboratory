@@ -1,0 +1,7 @@
+string verifyComplience() : function // pe post de State Machine
+	startState: State
+	initialState: Array<String>
+	finalState: Array<String>
+	states: Set<String>
+	alfabet: Set<String>
+	tranzitions: Array<String>
