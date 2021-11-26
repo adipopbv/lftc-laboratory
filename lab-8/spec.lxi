@@ -1,0 +1,110 @@
+%{
+#include <iostream>
+#include <vector>
+#include <string>
+#include <map>
+#include <utility>
+#include <stdio.h>
+
+extern FILE *yyin;
+extern char *yytext;
+extern int yylex(void);
+
+using namespace std;
+
+map<string, int> atoms = { {"ID", 0}, {"CONST", 1} };
+map<string, int> identifiers;
+map<string, int> constants;
+vector<pair<int, int>> internalForm;
+string error = "";
+
+void addAtom(string atom) {
+	atoms.insert(make_pair(atom, atoms.size()));
+	internalForm.push_back(make_pair(atoms.size() - 1, -1));
+}
+
+void addIdentifier(string identifier) {
+	identifiers.insert(make_pair(identifier, identifiers.size()));
+	internalForm.push_back(make_pair(0, identifiers[identifier]));
+}
+
+void addConstant(string constant) {
+	constants.insert(make_pair(constant, constants.size()));
+	internalForm.push_back(make_pair(1, constants[constant]));
+}
+
+void printResults() {
+	if (error != "")
+		cout << "Lexical error encountered while processing: " << error << "\n";
+	else{
+		cout << "Identifiers:\n";
+		for(auto identifier: identifiers)
+			cout << "    " << identifier.first << " " << identifier.second << "\n";
+		cout << "Constants:\n";
+		for(auto constant: constants)
+			cout << "    " << constant.first << " " << constant.second << "\n";
+		cout << "Internal Form:\n";
+		for(auto element: internalForm)
+			if (element.second == -1)
+				cout << "    " << element.first << " -\n";
+			else
+				cout << "    " << element.first << " " << element.second << "\n";
+	}
+}
+%}
+
+%option noyywrap
+identifier [a-zA-Z][a-zA-Z0-9_-]{0,7}
+constant   [0-9]+(\.[0-9]+)?
+
+%%
+"#include"   { addAtom(yytext); }
+"<iostream>" { addAtom(yytext); }
+"using"      { addAtom(yytext); }
+"namespace"  { addAtom(yytext); }
+"std"        { addAtom(yytext); }
+"int"        { addAtom(yytext); }
+"main()"     { addAtom(yytext); }
+"struct"     { addAtom(yytext); }
+"float"      { addAtom(yytext); }
+"cin"        { addAtom(yytext); }
+"cout"       { addAtom(yytext); }
+"if"         { addAtom(yytext); }
+"else"       { addAtom(yytext); }
+"while"      { addAtom(yytext); }
+"return"     { addAtom(yytext); }
+"+"          { addAtom(yytext); }
+"-"          { addAtom(yytext); }
+"*"          { addAtom(yytext); }
+"/"          { addAtom(yytext); }
+"%"          { addAtom(yytext); }
+"="          { addAtom(yytext); }
+"=="         { addAtom(yytext); }
+">="         { addAtom(yytext); }
+"<="         { addAtom(yytext); }
+">"          { addAtom(yytext); }
+"<"          { addAtom(yytext); }
+">>"         { addAtom(yytext); }
+"<<"         { addAtom(yytext); }
+"!"          { addAtom(yytext); }
+"("          { addAtom(yytext); }
+")"          { addAtom(yytext); }
+"{"          { addAtom(yytext); }
+"}"          { addAtom(yytext); }
+";"          { addAtom(yytext); }
+","          { addAtom(yytext); }
+{identifier} { addIdentifier(yytext); }
+{constant} 	 { addConstant(yytext); }
+[ \r\n]+	 { }
+. 			 { error = yytext; }
+%%
+
+int main(int argc, char** argv) {
+	if (argc > 1)
+		yyin = fopen(argv[1], "r");
+	else
+		yyin = stdin;
+	yylex();
+	printResults();
+	return 0;
+}
