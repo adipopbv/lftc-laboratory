@@ -11,6 +11,9 @@ int main() {
     float perim;
     float radius;
     float pi;
+    do {
+        ceva = altceva;
+    } while ( ceva == 1 );
 
     pi = 3.14;
     cin >> radius;

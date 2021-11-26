@@ -72,6 +72,7 @@ constant   [0-9]+(\.[0-9]+)?
 "if"         { addAtom(yytext); }
 "else"       { addAtom(yytext); }
 "while"      { addAtom(yytext); }
+"do" 		 { addAtom(yytext); }
 "return"     { addAtom(yytext); }
 "+"          { addAtom(yytext); }
 "-"          { addAtom(yytext); }

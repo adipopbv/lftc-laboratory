@@ -3,7 +3,7 @@
 using namespace std;
 
 int main() {
-    struct aaa {
+    struct aaaashldkajsdlkahj {
         int bbb;
     } ceva { 1 }, altceva { 1 };
     ceva = altceva;
