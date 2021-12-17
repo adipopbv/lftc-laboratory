@@ -128,24 +128,44 @@ class Gramatica:
 
     def _deplasare(self, index_stare: int, stiva_de_lucru: list, banda_de_intrare: list,
                    banda_de_iesire: list):
-        # ceva operatiuni pe ea
+        stiva_de_lucru.append(banda_de_intrare[0])
+        stiva_de_lucru.append(index_stare)
+        banda_de_intrare.pop(0)
         return stiva_de_lucru, banda_de_intrare, banda_de_iesire
 
-    def _reducere(self, index_regula: int):
-        pass
+    def _reducere(self, index_regula: int, stiva_de_lucru: list, banda_de_intrare: list,
+                  banda_de_iesire: list, tabel: dict):
+        banda_de_iesire.insert(0, index_regula)
+        regula_de_lucru = RegulaDeProductie(
+            self.reguli_de_productie[index_regula].membru_stang,
+            self.reguli_de_productie[index_regula].membru_drept
+        )
+        while stiva_de_lucru and regula_de_lucru.membru_drept:
+            element = stiva_de_lucru[-2]
+            if element == regula_de_lucru.membru_drept[-1]:
+                stiva_de_lucru.pop()
+                stiva_de_lucru.pop()
+            regula_de_lucru.membru_drept = regula_de_lucru.membru_drept[:-1]
+        stiva_de_lucru.append(regula_de_lucru.membru_stang)
+        stiva_de_lucru.append(tabel[regula_de_lucru.membru_stang][stiva_de_lucru[-2]]['starea'])
+        return stiva_de_lucru, banda_de_intrare, banda_de_iesire
 
-    def _accept(self):
-        pass
+    def _acceptare(self, banda_de_iesire: list):
+        print('Secventa acceptata\nSirul productiilor este: ')
+        print(banda_de_iesire)
+        exit(0)
 
     def _eroare(self):
-        pass
+        print('Secventa nu e acceptata')
+        exit(3)
 
-    def verifica_secventa(self, fisier_secventa: str) -> list:
+    def verifica_secventa(self, fisier_secventa: str):
         # colectia canonica
         gramatica = []
         for regula_din_stare in self.reguli_de_productie:
             gramatica.append(
-                RegulaDeProductie(regula_din_stare.membru_stang, '.' + regula_din_stare.membru_drept))
+                RegulaDeProductie(regula_din_stare.membru_stang,
+                                  '.' + regula_din_stare.membru_drept))
         starea0 = self._closure([gramatica[0]], gramatica)
         colectia_canonica = [starea0]
         tranzitii = {}
@@ -179,7 +199,7 @@ class Gramatica:
                                         self.terminali + \
                                         ['$']:
                                     tabel[element_tabel].append({
-                                        'operation': getattr(self, '_eroare')
+                                        'operatie': 'eroare'
                                     })
                             # (cel putin acum) exista starea in colectie
                             if 'starea' in tabel[element][index_stare]:
@@ -190,7 +210,7 @@ class Gramatica:
                             index_stare_noua = indexul_starii_in_colectia_canonica(
                                 stare_noua, colectia_canonica)
                             tabel[element][index_stare] = {
-                                'operation': getattr(self, '_deplasare'),
+                                'operatie': 'deplasare',
                                 'starea': index_stare_noua
                             }
                             if index_stare not in tranzitii:
@@ -214,13 +234,14 @@ class Gramatica:
                                     # e caz de accept
                                     for element in self.follow[self.simbol_initial]:
                                         tabel[element][index_stare] = {
-                                            'operation': getattr(self, '_accept')
+                                            'operatie': 'acceptare'
                                         }
                                 else:
                                     # e caz de reducere
-                                    for element in self.follow[regula_din_stare.membru_stang]:
+                                    for element in \
+                                            self.follow[regula_din_stare.membru_stang]:
                                         tabel[element][index_stare] = {
-                                            'operation': getattr(self, '_reducere'),
+                                            'operatie': 'reducere',
                                             'regula': index_regula
                                         }
                                 break
@@ -228,14 +249,31 @@ class Gramatica:
                 index_stare += 1
 
         # (0, abc, )
-        stiva_de_lucru = ['0']
+        stiva_de_lucru = [0]
         banda_de_intrare = []
         banda_de_iesire = []
         with open(fisier_secventa, 'r') as fisier:
             for element in fisier.readline():
                 banda_de_intrare.append(element)
+        banda_de_intrare.append('$')
 
-        return []
+        while True:
+            try:
+                celula = tabel[banda_de_intrare[0]][stiva_de_lucru[-1]]
+                if celula['operatie'] == 'deplasare':
+                    stiva_de_lucru, banda_de_intrare, banda_de_iesire = self._deplasare(
+                        celula['starea'], stiva_de_lucru, banda_de_intrare, banda_de_iesire)
+                elif celula['operatie'] == 'reducere':
+                    stiva_de_lucru, banda_de_intrare, banda_de_iesire = self._reducere(
+                        celula['regula'], stiva_de_lucru, banda_de_intrare,
+                        banda_de_iesire, tabel)
+                elif celula['operatie'] == 'acceptare':
+                    self._acceptare(banda_de_iesire)
+                else:
+                    self._eroare()
+            except KeyError as e:
+                print('Secventa nu e acceptata')
+                exit(3)
 
     def _closure(self, elemente_de_analiza: list, gramatica: list):
         stare = elemente_de_analiza
@@ -270,7 +308,4 @@ class Gramatica:
 
 if __name__ == '__main__':
     gramatica = Gramatica('gramatica2.txt')
-    sirul_productiilor_utilizate = gramatica.verifica_secventa('secventa.txt')
-    print(sirul_productiilor_utilizate)
-    # for regula in gramatica.reguli_de_productie:
-    #     print(f'{regula.membru_stang} -> {regula.membru_drept}')
+    gramatica.verifica_secventa('secventa.txt')
