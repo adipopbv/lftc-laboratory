@@ -104,7 +104,6 @@ class Gramatica:
                             self.first[regula.membru_drept[0]]
 
     def _gaseste_follow(self):
-        # nu mere cu epsilon
         for neterminal in self.neterminali:
             if neterminal == self.simbol_initial:
                 self.follow[neterminal] = ['$']
@@ -205,7 +204,7 @@ class Gramatica:
                             if 'starea' in tabel[element][index_stare]:
                                 # conflict
                                 print('Conflict frate')
-                                # exit(1)
+                                exit(1)
                             # bagam in tabel operatiunea noua
                             index_stare_noua = indexul_starii_in_colectia_canonica(
                                 stare_noua, colectia_canonica)
@@ -248,7 +247,6 @@ class Gramatica:
                             index_regula += 1
                 index_stare += 1
 
-        # (0, abc, )
         stiva_de_lucru = [0]
         banda_de_intrare = []
         banda_de_iesire = []
