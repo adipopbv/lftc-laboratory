@@ -131,15 +131,21 @@ class Gramatica:
         # ceva operatiuni pe ea
         return stiva_de_lucru, banda_de_intrare, banda_de_iesire
 
+    def _reducere(self, index_regula: int):
+        pass
+
+    def _accept(self):
+        pass
+
     def _eroare(self):
         pass
 
     def verifica_secventa(self, fisier_secventa: str) -> list:
         # colectia canonica
         gramatica = []
-        for regula in self.reguli_de_productie:
+        for regula_din_stare in self.reguli_de_productie:
             gramatica.append(
-                RegulaDeProductie(regula.membru_stang, '.' + regula.membru_drept))
+                RegulaDeProductie(regula_din_stare.membru_stang, '.' + regula_din_stare.membru_drept))
         starea0 = self._closure([gramatica[0]], gramatica)
         colectia_canonica = [starea0]
         tranzitii = {}
@@ -190,8 +196,35 @@ class Gramatica:
                             if index_stare not in tranzitii:
                                 tranzitii[index_stare] = []
                             tranzitii[index_stare].append(index_stare_noua)
-                        else:
-                            pass
+                # gasim regula cu punct la final pt a pune reducere
+                gasita_cu_punct = False
+                for regula_din_stare in stare:
+                    if regula_din_stare.membru_drept[-1] == '.':
+                        # am gasit una cu punct
+                        if gasita_cu_punct is True:
+                            print('Conflict frate (2 chiar)')
+                            exit(2)
+                        gasita_cu_punct = True
+                        index_regula = 0
+                        for regula in self.reguli_de_productie:
+                            if regula_din_stare.membru_drept == regula.membru_drept + '.' and \
+                                    regula_din_stare.membru_stang == regula.membru_stang:
+                                # am gasit-o
+                                if regula_din_stare.membru_stang == self.simbol_initial:
+                                    # e caz de accept
+                                    for element in self.follow[self.simbol_initial]:
+                                        tabel[element][index_stare] = {
+                                            'operation': getattr(self, '_accept')
+                                        }
+                                else:
+                                    # e caz de reducere
+                                    for element in self.follow[regula_din_stare.membru_stang]:
+                                        tabel[element][index_stare] = {
+                                            'operation': getattr(self, '_reducere'),
+                                            'regula': index_regula
+                                        }
+                                break
+                            index_regula += 1
                 index_stare += 1
 
         # (0, abc, )
