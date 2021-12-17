@@ -1,3 +1,41 @@
+import re
+
+
+def swap_characters(string: str, i: int, j: int) -> str:
+    c = list(string)
+    c[i], c[j] = c[j], c[i]
+    new_string = ''.join(c)
+    return new_string
+
+
+def stari_egale(starea1: list, starea2: list) -> bool:
+    if len(starea1) != len(starea2):
+        return False
+    check = True
+    for regula1, regula2 in zip(starea1, starea2):
+        if regula1.membru_stang != regula2.membru_stang:
+            check = False
+        if regula1.membru_drept != regula2.membru_drept:
+            check = False
+    return check
+
+
+def stare_in_lista_de_stari(stare_cautata: list, lista_de_stari: list) -> bool:
+    for stare in lista_de_stari:
+        if stari_egale(stare, stare_cautata):
+            return True
+    return False
+
+
+def indexul_starii_in_colectia_canonica(stare_cautata: list, colectia_canonica: list):
+    index = 0
+    for stare in colectia_canonica:
+        if stari_egale(stare, stare_cautata):
+            return index
+        index += 1
+    return None
+
+
 class RegulaDeProductie:
     membru_stang = ''
     membru_drept = ''
@@ -74,31 +112,131 @@ class Gramatica:
                 self.follow[neterminal] = []
         for regula in self.reguli_de_productie:
             for index in range(0, len(regula.membru_drept)):
-                if regula.membru_drept[index] in self.neterminali and index < len(regula.membru_drept) - 1:
+                if regula.membru_drept[index] in self.neterminali and index < len(
+                        regula.membru_drept) - 1:
                     if regula.membru_drept[index + 1] in self.terminali:
-                        self.follow[regula.membru_drept[index]] += regula.membru_drept[index + 1]
+                        self.follow[regula.membru_drept[index]] += regula.membru_drept[
+                            index + 1]
                     else:
-                        self.follow[regula.membru_drept[index]] += self.first[regula.membru_drept[index + 1]]
+                        self.follow[regula.membru_drept[index]] += self.first[
+                            regula.membru_drept[index + 1]]
         for regula in self.reguli_de_productie:
             if regula.membru_drept[-1] in self.neterminali:
                 for terminal in self.follow[regula.membru_stang]:
                     if terminal not in self.follow[regula.membru_drept[-1]]:
                         self.follow[regula.membru_drept[-1]] += terminal
 
+    def _deplasare(self, index_stare: int, stiva_de_lucru: list, banda_de_intrare: list,
+                   banda_de_iesire: list):
+        # ceva operatiuni pe ea
+        return stiva_de_lucru, banda_de_intrare, banda_de_iesire
+
+    def _eroare(self):
+        pass
+
     def verifica_secventa(self, fisier_secventa: str) -> list:
+        # colectia canonica
+        gramatica = []
+        for regula in self.reguli_de_productie:
+            gramatica.append(
+                RegulaDeProductie(regula.membru_stang, '.' + regula.membru_drept))
+        starea0 = self._closure([gramatica[0]], gramatica)
+        colectia_canonica = [starea0]
+        tranzitii = {}
+        tabel = {}
+        # initializam prima coloana din tabel pt ca starea 0 exista mereu
+        for element in self.neterminali + self.terminali + ['$']:
+            tabel[element] = [{
+                'operation': getattr(self, '_eroare')
+            }]
+        a_fost_modificat = True
+        while a_fost_modificat:
+            a_fost_modificat = False
+            index_stare = 0
+            for stare in colectia_canonica:
+                for element in self.neterminali + self.terminali:
+                    stare_noua = self._goto(stare, element, gramatica)
+                    if stare_noua is not None:
+                        index_stare_noua = indexul_starii_in_colectia_canonica(
+                            stare_noua, colectia_canonica)
+                        if index_stare not in tranzitii or index_stare_noua not in \
+                                tranzitii[index_stare]:
+                            if not stare_in_lista_de_stari(
+                                    stare_noua,
+                                    colectia_canonica):
+                                # nu exista starea in colectie
+                                a_fost_modificat = True
+                                colectia_canonica.append(stare_noua)
+                                # adaugam coloana noua in tabel
+                                for element_tabel in \
+                                        self.neterminali + \
+                                        self.terminali + \
+                                        ['$']:
+                                    tabel[element_tabel].append({
+                                        'operation': getattr(self, '_eroare')
+                                    })
+                            # (cel putin acum) exista starea in colectie
+                            if 'starea' in tabel[element][index_stare]:
+                                # conflict
+                                print('Conflict frate')
+                                # exit(1)
+                            # bagam in tabel operatiunea noua
+                            index_stare_noua = indexul_starii_in_colectia_canonica(
+                                stare_noua, colectia_canonica)
+                            tabel[element][index_stare] = {
+                                'operation': getattr(self, '_deplasare'),
+                                'starea': index_stare_noua
+                            }
+                            if index_stare not in tranzitii:
+                                tranzitii[index_stare] = []
+                            tranzitii[index_stare].append(index_stare_noua)
+                        else:
+                            pass
+                index_stare += 1
+
         # (0, abc, )
         stiva_de_lucru = ['0']
         banda_de_intrare = []
         banda_de_iesire = []
         with open(fisier_secventa, 'r') as fisier:
             for element in fisier.readline():
-                banda_de_intrare += element
+                banda_de_intrare.append(element)
 
-        # if
+        return []
+
+    def _closure(self, elemente_de_analiza: list, gramatica: list):
+        stare = elemente_de_analiza
+        a_fost_modificat = True
+        while a_fost_modificat:
+            a_fost_modificat = False
+            for regula_din_stare in stare:
+                neterminal = re.search('.*\\.([A-Z]).*', regula_din_stare.membru_drept)
+                if neterminal is not None:
+                    neterminal = neterminal.group(1)
+                    for regula in gramatica:
+                        if regula.membru_stang == neterminal and regula not in stare:
+                            a_fost_modificat = True
+                            stare.append(regula)
+        return stare
+
+    def _goto(self, stare, element, gramatica):
+        reguli = []
+        for regula in stare:
+            neterminal = re.search('\\.(' + element + ')', regula.membru_drept)
+            if neterminal is not None:
+                reguli.append(RegulaDeProductie(
+                    regula.membru_stang,
+                    swap_characters(
+                        regula.membru_drept,
+                        neterminal.start(),
+                        neterminal.end() - 1)))
+        if not reguli:
+            return None
+        return self._closure(reguli, gramatica)
 
 
 if __name__ == '__main__':
-    gramatica = Gramatica('gramatica.txt')
+    gramatica = Gramatica('gramatica2.txt')
     sirul_productiilor_utilizate = gramatica.verifica_secventa('secventa.txt')
     print(sirul_productiilor_utilizate)
     # for regula in gramatica.reguli_de_productie:
