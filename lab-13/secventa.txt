@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+	int a ;
+    int a ;
+	cin >> a ;
+	cin >> a ;
+	while ( a != a )
+	{
+		if ( a > a )
+			a = a - a ;
+		else
+			a = a - a ;
+	}
+	cout << a ;
+	return 0 ;
+}

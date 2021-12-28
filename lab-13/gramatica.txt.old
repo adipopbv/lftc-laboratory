@@ -1,0 +1,48 @@
+<program> ::= #include <iostream> using namespace std; int main() { <lista_instructiuni> return 0; }
+<lista_instructiuni> ::= <instructiune>
+<lista_instructiuni> ::= <instructiune> <lista_instructiuni>
+<instructiune> ::= <while>
+<instructiune> ::= <for>
+<instructiune> ::= <if>
+<instructiune> ::= <if else>
+<instructiune> ::= <atrib>
+<instructiune> ::= <intrare>
+<instructiune> ::= <iesire>
+<instructiune> ::= <decl>
+<while> ::= while ( <cond> ) { <lista_instructiuni> }
+<cond> ::= <variabile> <op_rel> <variabile>
+<cond> ::= <variabile> <op_rel> <CONST>
+<CONST> ::= 0
+<op_rel> ::= !=
+<op_rel> ::= ==
+<op_rel> ::= >
+<op_rel> ::= <
+<op_rel> ::= >=
+<op_rel> ::= <=
+<variabile> ::= <ID>
+<ID> ::= a
+<for> ::= for ( <variabile> <op_atr> <variabile> ; <variabile> <op_rel> <variabile> ; <variabile> <op_atr> <variabile> ) { <lista_instructiuni> }
+<for> ::= for ( <variabile> <op_atr> <CONST> ; <variabile> <op_rel> <variabile> ; <variabile> <op_atr> <variabile> ) { <lista_instructiuni> }
+<for> ::= for ( <variabile> <op_atr> <CONST> ; <variabile> <op_rel> <CONST> ; <variabile> <op_atr> <variabile> ) { <lista_instructiuni> }
+<for> ::= for ( <variabile> <op_atr> <CONST> ; <variabile> <op_rel> <variabile> ; <variabile> <op_atr> <CONST> ) { <lista_instructiuni> }
+<for> ::= for ( <variabile> <op_atr> <CONST> ; <variabile> <op_rel> <CONST> ; <variabile> <op_atr> <CONST> ) { <lista_instructiuni> }
+<for> ::= for ( <variabile> <op_atr> <variabile> ; <variabile> <op_rel> <CONST> ; <variabile> <op_atr> <variabile> ) { <lista_instructiuni> }
+<for> ::= for ( <variabile> <op_atr> <variabile> ; <variabile> <op_rel> <CONST> ; <variabile> <op_atr> <CONST> ) { <lista_instructiuni> }
+<for> ::= for ( <variabile> <op_atr> <variabile> ; <variabile> <op_rel> <variabile> ; <variabile> <op_atr> <CONST> ) { <lista_instructiuni> }
+<op_atr> ::= =
+<op_atr> ::= +=
+<op_atr> ::= -=
+<if> ::= if ( <cond> ) { <lista_instructiuni> }
+<if_else> ::= <if> else { <lista_instructiuni> }
+<atrib> ::= <variabile> <op_atr> <variabile>
+<atrib> ::= <variabile> <op_atr> <CONST>
+<intrare> ::= cin >> <variabile>
+<iesire> ::= cout << <variabile>
+<iesire> ::= cout << <CONST>
+<decl> ::= <tip_de_date> <variabile>
+<tip_de_date> ::= int
+<tip_de_date> ::= float
+<tip_de_date> ::= bool
+<tip_de_date> ::= <special>
+<special> ::= special <variabile> ( true )
+<special> ::= special <variabile> ( false )

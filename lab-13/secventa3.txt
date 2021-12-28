@@ -1,0 +1,7 @@
+{
+    int a ;
+    if ( a == 0 ) {
+        int a ;
+    }
+    return 0 ;
+}
