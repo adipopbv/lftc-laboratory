@@ -5,10 +5,10 @@
 <instructiune> ::= <for>
 <instructiune> ::= <if>
 <instructiune> ::= <if_else>
-<instructiune> ::= <atrib>
-<instructiune> ::= <intrare>
-<instructiune> ::= <iesire>
-<instructiune> ::= <decl>
+<instructiune> ::= <atrib> ;
+<instructiune> ::= <intrare> ;
+<instructiune> ::= <iesire> ;
+<instructiune> ::= <decl> ;
 <while> ::= while ( <cond> ) { <lista_instructiuni> }
 <cond> ::= <variabile> <op_rel> <variabile>
 <cond> ::= <variabile> <op_rel> <CONST>

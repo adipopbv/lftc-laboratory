@@ -114,9 +114,10 @@ class Gramatica:
             a_fost_modificat = False
             for regula in self.reguli_de_productie:
                 if regula.membru_drept[0] in self.neterminali:
-                    if not self.first[regula.membru_stang]:
-                        a_fost_modificat = True
-                        self.first[regula.membru_stang] += self.first[regula.membru_drept[0]]
+                    for element in self.first[regula.membru_drept[0]]:
+                        if element not in self.first[regula.membru_stang]:
+                            a_fost_modificat = True
+                            self.first[regula.membru_stang].append(element)
 
     def _gaseste_follow(self):
         for neterminal in self.neterminali:
@@ -174,8 +175,8 @@ class Gramatica:
         print(banda_de_iesire)
         exit(0)
 
-    def _eroare(self):
-        print('Secventa nu e acceptata')
+    def _eroare(self, mesaj: str):
+        print(f'Secventa nu e acceptata: {mesaj}')
         exit(3)
 
     def verifica_secventa(self, fisier_secventa: str):
@@ -276,8 +277,11 @@ class Gramatica:
         banda_de_intrare = []
         banda_de_iesire = []
         with open(fisier_secventa, 'r') as fisier:
-            for element in fisier.readline().strip():
-                banda_de_intrare.append(element)
+            for line in fisier.readlines():
+                line = line.strip()
+                for element in line.split(' '):
+                    if element != '':
+                        banda_de_intrare.append(element)
         banda_de_intrare.append('$')
 
         while True:
@@ -294,9 +298,9 @@ class Gramatica:
                 elif celula['operatie'] == 'acceptare':
                     self._acceptare(banda_de_iesire)
                 else:
-                    self._eroare()
+                    self._eroare(banda_de_intrare[0])
             except KeyError as e:
-                print('Secventa nu e acceptata')
+                print(f'Secventa nu e acceptata: {e}')
                 exit(3)
 
     def _closure(self, elemente_de_analiza: list, gramatica: list):
@@ -335,8 +339,8 @@ class Gramatica:
 
 
 if __name__ == '__main__':
-    gramatica = Gramatica('gramatica3.txt')
-    gramatica.verifica_secventa('secventa3.txt')
+    gramatica = Gramatica('gramatica.txt')
+    gramatica.verifica_secventa('secventa.txt')
 
 # import copy
 # 

@@ -1,7 +1,7 @@
 <program> ::= { <lista_instructiuni> return 0 ; }
 <lista_instructiuni> ::= <instructiune> <lista_instructiuni>
 <lista_instructiuni> ::= <instructiune>
-<instructiune> ::= <decl>
+<instructiune> ::= <decl> ;
 <instructiune> ::= <if>
 <decl> ::= <tip_de_date> <variabile>
 <tip_de_date> ::= int
