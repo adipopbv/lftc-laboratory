@@ -1,0 +1,41 @@
+<program> ::= #include <iostream> using namespace std ; int main ( ) { <lista_instructiuni> return <CONST> ; }
+<lista_instructiuni> ::= <instructiune> <lista_instructiuni>
+<lista_instructiuni> ::= <instructiune>
+<instructiune> ::= <decl> ;
+<instructiune> ::= <intrare> ;
+<instructiune> ::= <iesire> ;
+<instructiune> ::= <atrib> ;
+<instructiune> ::= <if>
+<instructiune> ::= <if_else>
+<instructiune> ::= <while>
+<instructiune> ::= <for>
+<decl> ::= <tip_de_date> <variabile>
+<intrare> ::= cin >> <variabile>
+<iesire> ::= cout << <variabile>
+<iesire> ::= cout << <CONST>
+<atrib> ::= <variabile> <op_atr> <variabile>
+<atrib> ::= <variabile> <op_atr> <CONST>
+<if> ::= if ( <cond> ) { <lista_instructiuni> }
+<if_else> ::= <if> else { <lista_instructiuni> }
+<while> ::= while ( <cond> ) { <lista_instructiuni> }
+<for> ::= for ( <atrib> ; <cond> ; <atrib> ) { <lista_instructiuni> }
+<cond> ::= <variabile> <op_rel> <variabile>
+<cond> ::= <variabile> <op_rel> <CONST>
+<op_atr> ::= =
+<op_atr> ::= +=
+<op_atr> ::= -=
+<op_rel> ::= ==
+<op_rel> ::= !=
+<op_rel> ::= >
+<op_rel> ::= <
+<op_rel> ::= >=
+<op_rel> ::= <=
+<tip_de_date> ::= <special>
+<tip_de_date> ::= int
+<tip_de_date> ::= float
+<tip_de_date> ::= bool
+<special> ::= special <variabile> ( true )
+<special> ::= special <variabile> ( false )
+<variabile> ::= <ID>
+<ID> ::= [a-zA-Z][a-zA-Z0-9]*
+<CONST> ::= [0-9]+(\.[0-9]+)?

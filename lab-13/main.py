@@ -366,5 +366,5 @@ class Gramatica:
 
 
 if __name__ == '__main__':
-    gramatica = Gramatica('gramatica2.txt')
-    gramatica.verifica_secventa('secventa2.txt')
+    gramatica = Gramatica('gramatica.txt')
+    gramatica.verifica_secventa('secventa.txt')

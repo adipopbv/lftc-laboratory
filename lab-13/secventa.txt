@@ -4,17 +4,23 @@ using namespace std ;
 
 int main ( )
 {
-	int a ;
-	cin >> a ;
-	while ( a != a )
+	int i ;
+	cin >> i ;
+	float j ;
+	cin >> j ;
+	int s ;
+	while ( i != 2 )
 	{
-		if ( a > 0 ) {
-			a += a ;
-		}
-		else {
-			a -= a ;
-		}
+	    for ( j = 12 ; j <= 3.14 ; j += 0 ) {
+		    if ( s > 3 ) {
+			    s -= i ;
+		    }
+		    else {
+			    s += j ;
+		    }
+	    }
+	    i += 0 ;
 	}
-	cout << a ;
+	cout << s ;
 	return 0 ;
 }

@@ -1,5 +1,7 @@
 {
     int a ;
+    int a ;
+    cin >> a ;
     if ( a == 0 ) {
         int a ;
     }

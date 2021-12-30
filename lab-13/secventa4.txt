@@ -1,0 +1,40 @@
+#include <iostream>
+
+using namespace std ;
+
+int main ( )
+{
+	int a ;
+	int a ;
+	a = b ;
+	a += b ;
+	a -= b ;
+	a = 0 ;
+	a += 2 ;
+	a -= 3 ;
+	cout << 12 ;
+	int b ;
+	cin >> c ;
+	cout << 12 ;
+	cin >> d ;
+	cout << asd ;
+	if ( a == b ) {
+	    b += asd ;
+	}
+	if ( a == b ) {
+	    b += asd ;
+	} else {
+	    a += asd ;
+	}
+	while ( ceva != altceva ) {
+	    if ( a == b ) {
+	        cout << ajutor ;
+	    }
+	}
+	for ( a = 1 ; a <= b ; a += 2 ) {
+	    while ( a == 1 ) {
+	        cin >> a ;
+	    }
+	}
+	return 0 ;
+}

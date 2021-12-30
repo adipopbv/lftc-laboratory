@@ -2,9 +2,11 @@
 <lista_instructiuni> ::= <instructiune> <lista_instructiuni>
 <lista_instructiuni> ::= <instructiune>
 <instructiune> ::= <decl> ;
+<instructiune> ::= <intrare> ;
 <instructiune> ::= <if>
 <decl> ::= <tip_de_date> <variabile>
 <tip_de_date> ::= int
+<intrare> ::= cin >> <variabile>
 <if> ::= if ( <cond> ) { <lista_instructiuni> }
 <cond> ::= <variabile> <op_rel> <CONST>
 <variabile> ::= <ID>
