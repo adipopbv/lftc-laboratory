@@ -1,4 +1,4 @@
-<program> ::= { <lista_instructiuni> return 0 ; }
+<program> ::= { <lista_instructiuni> return <CONST> ; }
 <lista_instructiuni> ::= <instructiune> <lista_instructiuni>
 <lista_instructiuni> ::= <instructiune>
 <instructiune> ::= <decl> ;
@@ -8,6 +8,6 @@
 <if> ::= if ( <cond> ) { <lista_instructiuni> }
 <cond> ::= <variabile> <op_rel> <CONST>
 <variabile> ::= <ID>
-<ID> ::= a
+<ID> ::= [a-zA-Z][a-zA-Z0-9]*
 <op_rel> ::= ==
-<CONST> ::= 0
+<CONST> ::= [0-9]+(\.[0-9]+)?

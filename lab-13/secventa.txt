@@ -8,7 +8,7 @@ int main ( )
 	cin >> a ;
 	while ( a != a )
 	{
-		if ( a > a ) {
+		if ( a > 0 ) {
 			a += a ;
 		}
 		else {
