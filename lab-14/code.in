@@ -1,0 +1,16 @@
+{
+	int a;
+	int b;
+	int c;
+
+	cin >> a;
+	cin >> b;
+
+	a = 8 / 2;
+	cout << a;
+	b = 100 / 5;
+	cout << b;
+	c = 1 + b * a;
+	cout << c;
+}
+

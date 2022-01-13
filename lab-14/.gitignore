@@ -1,0 +1,7 @@
+nasm/
+*.exe
+*.lst
+*.obj
+*.yy.c
+*.tab.*
+*.output
